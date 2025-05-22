@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-X11-app",
+      "type": "shell",
+      "command": "gcc",
+      "args": [
+        "-I/opt/X11/include",
+        "-L/opt/X11/lib",
+        "main.c", "input.c", "rendering.c", "transforms.c",
+        "-lX11",
+        "-o", "main"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
