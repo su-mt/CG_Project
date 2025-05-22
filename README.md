@@ -4,3 +4,6 @@ CG Coursework: 3D Rendering of a Cube and Triangular Pyramid with Z-Buffer and R
 ``` bash
     make 
     make run
+
+
+Use wasdzx for move, qef for rotate, +- for scale, Q for exit
