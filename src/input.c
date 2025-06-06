@@ -11,25 +11,20 @@ extern double scale;
 
 int type_of_project = PERSPECTIVE;
 
-void event_loop(Display* display, Window window, GC gc) {
-    const int width  = 800;
-    const int height = 600;
-    const double delta_t = 10.0;           // пикселей для смещения
-    const double delta_r = M_PI / 60.0;    // ~3° поворота
-    const double delta_s = 0.1;            // изменение масштаба
+void event_loop(Display* display, Window window, GC gc)
+{
+    Pixmap pixmap = create_pixmap_buffer(display, window, WIDTH, HEIGHT);
 
-    // Первичная отрисовка
-    XClearWindow(display,window);
-    draw_scene(display, window, gc, width, height, 200.0);
-    
+    clear_pixmap(display, pixmap, gc, WIDTH, HEIGHT);
+    draw_scene_pixmap(display, pixmap, gc, WIDTH, HEIGHT, DEFAULT_SIZE);
+    copy_pixmap_to_window(display, window, gc, pixmap, WIDTH, HEIGHT);
 
     while (1) {
         XEvent e;
         XNextEvent(display, &e);
 
         if (e.type == Expose) {
-            XClearWindow(display,window);
-            draw_scene(display, window, gc, width, height, 200.0);
+            copy_pixmap_to_window(display, window, gc, pixmap, WIDTH, HEIGHT);
         }
         if (e.type == KeyPress) {
             KeySym key;
@@ -37,32 +32,33 @@ void event_loop(Display* display, Window window, GC gc) {
             XLookupString(&e.xkey, text, sizeof(text), &key, NULL);
 
             switch (text[0]) {
-                // смещение
-                case 'w': ty += delta_t; break;
-                case 's': ty -= delta_t; break;
-                case 'a': tx -= delta_t; break;
-                case 'd': tx += delta_t; break;
-                case 'z': tz += delta_t; break;
-                case 'x': tz -= delta_t; break;
-                // вращение
-                case 'q': rx += delta_r; break;
-                case 'e': ry += delta_r; break;
-                case 'f': rz += delta_r; break;
-                // масштаб
-                case '+': scale += delta_s; break;
-                case '-': scale = fmax(0.1, scale - delta_s); break;
-
+                case 'w': ty += DELTA_TRANSLATION; break;
+                case 's': ty -= DELTA_TRANSLATION; break;
+                case 'a': tx -= DELTA_TRANSLATION; break;
+                case 'd': tx += DELTA_TRANSLATION; break;
+                case 'z': tz += DELTA_TRANSLATION; break;
+                case 'x': tz -= DELTA_TRANSLATION; break;
+                case 'q': ry += DELTA_ROTATION; break;
+                case 'e': ry -= DELTA_ROTATION; break;
+                case 'r': rx += DELTA_ROTATION; break;
+                case 'f': rx -= DELTA_ROTATION; break;
+                case ',': rz -= DELTA_ROTATION; break;
+                case '.': rz += DELTA_ROTATION; break;
+                case '+': scale += DELTA_SCALE; break;
+                case '-': scale = fmax(MIN_SCALE, scale - DELTA_SCALE); break;
                 case 'p': type_of_project = (type_of_project%3+1); break;
-                // выход
-                case 'Q': return;
+                case 'Q': 
+                    XFreePixmap(display, pixmap);
+                    return;
                 default: continue;
             }
 
-            XClearWindow(display, window);
             printf("tx=%.2f ty=%.2f tz=%.2f | rx=%.2f ry=%.2f rz=%.2f | scale=%.2f | type_of_project=%d\n", 
-    tx, ty, tz, rx, ry, rz, scale, type_of_project);
+                   tx, ty, tz, rx, ry, rz, scale, type_of_project);
 
-            draw_scene(display, window, gc, width, height, 200.0);
+            clear_pixmap(display, pixmap, gc, WIDTH, HEIGHT);
+            draw_scene_pixmap(display, pixmap, gc, WIDTH, HEIGHT, DEFAULT_SIZE);
+            copy_pixmap_to_window(display, window, gc, pixmap, WIDTH, HEIGHT);
         }
     }
 }
