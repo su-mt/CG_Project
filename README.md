@@ -75,6 +75,8 @@ make clean
 
 ## Troubleshooting
 
+- If controls don't work, check your keyboard layout and restart the app.
+- Display connection failed: Restart the application
 - Ensure XQuartz/X11 server is installed and running
 - `export DISPLAY=:0`
 - Check library installation: `pkg-config --exists x11`

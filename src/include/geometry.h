@@ -8,14 +8,9 @@
 #include "X11/keysym.h"
 #include "X11/Xutil.h"
 
-#define M_PI 3.1459
 
-#define PERSPECTIVE 1
-#define ORTOGRAPHIC 2
-#define ISOMETRIC   3
-
-#define WIDTH 800
-#define HEIGHT 600
+#define WIDTH 1080
+#define HEIGHT 720
 
 #define INF 10000000
 #define DEFAULT_SIZE 200.0
@@ -45,6 +40,12 @@
 #define DELTA_SCALE 0.1
 #define MIN_SCALE 0.1
 #define ISO_ANGLE (M_PI/6)
+
+#define M_PI 3.1459
+
+#define PERSPECTIVE 1
+#define ORTOGRAPHIC 2
+#define ISOMETRIC   3
 
 typedef struct Point3D{
     double x,y,z;
