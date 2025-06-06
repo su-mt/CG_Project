@@ -10,8 +10,7 @@ Interactive 3D application for geometric object visualization, written in C usin
 - **Projections** (perspective, orthographic, isometric)
 - **Z-Buffering** for correct depth rendering
 - **Shadow Casting** using projection method
-- **Double Buffering** to eliminate flickering
-
+- **Double Buffering** for optimization
 
 
 ## System Requirements
