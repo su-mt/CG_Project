@@ -2,6 +2,8 @@
 
 3D Rendering of Cube and Pyramid with Z-Buffer, Shadows and Interactive Controls
 
+![alt text](image.png)
+
 ## Description
 
 Interactive 3D application for geometric object visualization, written in C using X11 library. The project demonstrates fundamental computer graphics principles:
